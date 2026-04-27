@@ -1,6 +1,6 @@
 
 
-```markdown
+
 <div align="center">
   <h1>🛡️ SentinelTrap</h1>
   <p><b>Automated Endpoint Detection & Active Response (EDR) for Windows</b></p>
