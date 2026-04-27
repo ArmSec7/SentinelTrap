@@ -27,12 +27,12 @@ graph TD
     A[Windows Event Viewer] -->|Event ID 4625| B(Regex Log Parser)
     B --> C{Whitelisted IP?}
     C -->|Yes| D[Discard / Log Local]
-    C -->|No| E[AbuseIPDB API]
-    E -->|Fetch Threat Intel| F{Score > Threshold?}
-    F -->|Yes| G[New-NetFirewallRule]
+    C -->|No| E{Failed Attempts >= 3?}
+    E -->|No| D
+    E -->|Yes| F[Fetch Threat Intel via API]
+    F --> G[New-NetFirewallRule]
     G -->|Block Inbound| H[Host Isolated]
     H --> I[Discord Webhook Alert]
-    F -->|No| I
 ```
 
 ## 🚀 Key Capabilities
@@ -52,15 +52,15 @@ graph TD
 
 ### Installation
 1. Clone the repository to your designated security tools directory:
-   ```bash
-   git clone [https://github.com/ArmSec7/SentinelTrap.git](https://github.com/ArmSec7/SentinelTrap.git)
+   ```
+   git clone https://github.com/ArmSec7/SentinelTrap.git
    ```
 2. Enable Windows Logon Failure Auditing (Required for Event ID 4625 generation):
-   ```cmd
+   ```
    auditpol /set /subcategory:"Logon" /failure:enable
    ```
 3. Open `SentinelTrap.ps1` and inject your API Keys into the configuration block:
-   ```powershell
+   ```
    $API_KEY = "YOUR_ABUSEIPDB_KEY"
    $DISCORD_WEBHOOK = "YOUR_WEBHOOK_URL"
    ```
@@ -78,5 +78,4 @@ powershell -ExecutionPolicy Bypass -File .\SentinelTrap.ps1
 
 ---
 *Developed for SOC Operations and Endpoint Security Architecture.*
-```
 
